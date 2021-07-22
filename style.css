@@ -1,0 +1,60 @@
+.rp-canvas {
+  background: #FFF;
+}
+
+.rp-propmt-cue {
+  background: #FFF;
+}
+
+section {
+  position:absolute;
+  height: 100%;
+  width: 100%;
+}
+
+/* h1 */
+h1 {
+  font-size: 6em;
+  color: teal;
+  padding-top: 1em;
+  text-align: center;
+  position: absolute;
+  top:10%;
+  width:100%;
+}
+
+h2 {
+  color: teal;
+  font-size: 5em;
+  text-align: center;
+  position: absolute;
+  top:  10%;
+  width: 100%;
+}
+
+
+#intro-props {
+  position: absolute;
+
+}
+
+ul {
+  font-size: 3em;
+  position: absolute;
+  left: 35%;
+  top:40%;
+}
+
+#bubble {
+  left: 25%;
+  width: 50%;
+  top: 5%;
+  position: absolute;
+}
+
+#bubble > text {
+  /*font-size: 2em;*/
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}

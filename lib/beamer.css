@@ -1,0 +1,21 @@
+.beamer {
+    box-shadow: 0 0 .2em #000;
+    border: 1px solid #000;
+    border-radius: .2em;
+    margin: 0 auto;
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    width: 80%;
+  }
+  
+  .beamer > header {
+    background: linear-gradient(#00F, #00A);
+    color: #FFF;
+    padding: .2em .5em;
+  }
+  
+  .beamer > .content {
+    background: #EEE;
+    padding: .5em;
+  }
