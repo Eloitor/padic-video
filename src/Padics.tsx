@@ -115,7 +115,7 @@ export default function Padics(props) {
 
   const onWheel = React.useCallback((e: React.WheelEvent<SVGElement>) => {
     const [x, y] = screenToSVG(svg.current, e.clientX, e.clientY);
-    zoom.current = constrain(1, zoom.current - e.deltaY / 200, 20);
+    zoom.current = constrain(1, zoom.current - e.deltaY / 200, 100);
     svg.current.setAttribute("viewBox", [
       
         constrain(-50, (-50-x) / zoom.current +x, 50),
