@@ -11,7 +11,8 @@
     "target": "es2017",
 
     "paths": {
-      "@env/*": ["./src/@development/*", "./src/@production/*"]
+      "@env/*": ["./src/@development/*", "./src/@production/*"],
+      "@lib/*": ["./lib/*"]
     }
   },
   "files": ["./server.ts", "./src/index.tsx"]
