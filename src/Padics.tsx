@@ -1,14 +1,10 @@
 //import * as console from 'console';
 import * as React from 'react';
 import {Utils} from "liqvid";
+import * as d3 from 'd3'; // For zooming
+
 const {constrain, range} = Utils.misc;
-
-import {screenToSVG} from "@lib/svg-utils";
-
-//import {zoom} from "https://cdn.skypack.dev/d3-zoom@3";
-import {zoom} from "d3-zoom";
-
-const handler = zoom();
+import { useRef, useEffect,useState } from 'react';
 
 // A react component that renders a padic Open.
 class Open extends React.Component<any, any> {
@@ -70,7 +66,6 @@ class Open extends React.Component<any, any> {
         { this.draw_childs() }
       )
     )
-      
     </React.Fragment>
     );
   }
@@ -93,7 +88,6 @@ class Open extends React.Component<any, any> {
           strokeWidth={this.state.strokeWidth}
           value={this.state.value + i*this.state.p**(1+this.state.level)}
           level={this.state.level+1}
-         // childs={[]}
         />);
       }))
     }
@@ -105,25 +99,28 @@ export default function Padics(props) {
   const r = 50;
   const r_child = r * 0.37;
 
-  //const [digits, setDigits] = React.useState("");
+  const [opens, updateOpens] = React.useState<number[]>(() => range(p) );
 
-  //const [numbers, updateNumbers] = React.useState([]);
-  const [opens, updateOpens] = React.useState(() => range(p) );
+  const svgRef = React.useRef<SVGSVGElement>();
+  const [currentZoomState, setCurrentZoomState] = useState<number>(() => 1);
 
-  const svg = React.useRef<SVGSVGElement>();
-  const zoom = React.useRef(1);
+  // will be called initialy and on every change
+  // adds zooming functionality
+  useEffect(() => {
+    const svg = d3.select(svgRef.current);
+    const svgContent = svg.select(".content");
+    const zoomBehaviour = d3.zoom().scaleExtent([1, Infinity])
+    .on('zoom', (event) => { 
+      const zoomState = event.transform;
+      svg.attr("transform", zoomState)
+      .attr("viewBox", [-50,-50,100, 100].join(" "));
+      console.log( zoomState );
+      setCurrentZoomState(zoomState);
+    });
 
-  const onWheel = React.useCallback((e: React.WheelEvent<SVGElement>) => {
-    const [x, y] = screenToSVG(svg.current, e.clientX, e.clientY);
-    zoom.current = constrain(1, zoom.current - e.deltaY / 200, 100);
-    svg.current.setAttribute("viewBox", [
-      
-        constrain(-50, (-50-x) / zoom.current +x, 50),
-        constrain(-50, (-50 -y) / zoom.current +y, 50),
-        100 / zoom.current, // width
-        100 / zoom.current //height
-    ].join(" "));
-  }, []);
+    svg.call(zoomBehaviour);
+  }, [currentZoomState]);
+
     
   return (
     <section {...props}>
@@ -131,7 +128,8 @@ export default function Padics(props) {
       <text x={0} y={0} fontSize={0.5} fill={'black'}>
         Click on the opens to see what's inside them
       </text>
-      <svg id="bubble" viewBox="-50 -50 100 100" onWheel={onWheel} ref={svg}>
+      <svg width="100%" height="80%" viewBox="-50 -50 100 100">
+      <g id="bubble"  viewBox="-50 -50 100 100"   ref={svgRef}>
         <circle cx="0" cy="0" r="50" fill="blue" />
         {opens.map(i => (
           <Open
@@ -148,7 +146,9 @@ export default function Padics(props) {
         />
         )
         )}
+      </g>
       </svg>
+      
       </>
     </section>
   
