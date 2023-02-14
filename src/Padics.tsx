@@ -32,7 +32,15 @@ class Open extends React.Component<any, any> {
       childs.push(this.state.value + i * this.state.p**(1+this.state.level));
     }
     this.setState({childs: childs});
+    
+    if (this.state.fill == "lightgreen") {
+        if (this.state.level % 2){
+          this.setState({fill: "blue"});
+        } else {
+          this.setState({fill: "yellow"});
+      }
     }
+  }
     
     render() {  
         let value = this.state.value; 
@@ -43,7 +51,7 @@ class Open extends React.Component<any, any> {
             r={this.props.r} 
             cx={this.props.cx} 
             cy={this.props.cy} 
-            fill={this.props.fill} 
+            fill={this.state.fill} 
             stroke={this.props.stroke} 
             strokeWidth={this.props.strokeWidth}
           />
@@ -128,7 +136,7 @@ export default function Padics(props) {
       <text x={0} y={0} fontSize={0.5} fill={'black'}>
         Click on the opens to see what's inside them
       </text>
-      <svg width="100%" height="80%" viewBox="-50 -50 100 100">
+      <svg width="100%" height="95%" viewBox="-50 -50 100 100">
       <g id="bubble"  viewBox="-50 -50 100 100"   ref={svgRef}>
         <circle cx="0" cy="0" r="50" fill="blue" />
         {opens.map(i => (
